@@ -2,6 +2,9 @@
 
 pipeline {
     agent any
+    enviroment {
+        SERVER_CREDENTIALS = credentials('slhfs')
+    }
     stages {
         stage('build') {
             steps {
@@ -19,10 +22,14 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                script {
                     echo "Deploying the application..."
+                    withCredentials([usernamePassword(credentials: 'slhfs', usernameVariable: USER, passwordVariable: PWD )]) 
+                    {
+                      sh "some scipt ${USER} ${PWD}"
+                    }
                 }
+
             }
         }
     }
-}
+
