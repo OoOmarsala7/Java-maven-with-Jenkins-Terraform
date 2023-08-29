@@ -1,3 +1,4 @@
+def gv
 pipeline {
     agent any
     tools {
@@ -11,34 +12,32 @@ pipeline {
         SERVER_CREDENTIALS = credentials('slhfs')
     }
     stages {
+        stage('init') {
+            script{
+                gv = load script.groovy
+
+            }
+
         stage('build') {
-            when {
-                expression {
-                    params.versionChoice == '1.0'
-                }
+            script{
+                gv.buildApp()
             }
-            steps {
-                script {
-                    echo "${params.versionChoice} the application..."
-                }
-            }
+        }
         }
         stage('test') {
             steps {
                 script {
-                    echo "Testing the application..."
+                    gv.testingApp
                 }
             }
         }
         stage('deploy') {
             steps {
                 script {
-                    echo "Deploying the application..."
-                    withCredentials([usernamePassword(credentialsId: 'slhfs', usernameVariable: 'USER', passwordVariable: 'PWD')]) {
-                        echo "some script ${USER} ${PWD}"
+                    gv.deployApp
                     }
                 }
             }
         }
     }
-}
+
