@@ -31,12 +31,12 @@ pipeline {
         }
         stage('deploy') {
 
-            withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')])
-            steps {
-                script {
-                    echo "Logging into docker hub"
-                    sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
-                    sh "docker push omarsala7/my-rep:myjvp1.0"
+                steps {
+                    withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')])
+                    script {
+                        echo "Logging into docker hub"
+                        sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
+                        sh "docker push omarsala7/my-rep:myjvp1.0"
                 }
             }
         }
