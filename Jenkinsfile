@@ -46,12 +46,12 @@ pipeline {
                 message "enter the enviroment to deploy to"
                 ok "done"
                 parameters{
-                     choice(name: 'env', choices: ['dev', 'test'])
+                     choice(name: 'ENV', choices: ['dev', 'test'])
                 }
             }
             steps {
                 script {
-                    echo "deploying to ${env}"
+                    echo "deploying to ${ENV}"
                     gv.deployApp()
                 }
             }
