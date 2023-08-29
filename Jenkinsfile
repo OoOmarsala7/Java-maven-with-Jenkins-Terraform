@@ -1,29 +1,25 @@
-#!/usr/bin/env groovy
-
 pipeline {
     agent any
-    tools{
+    tools {
         maven 'maven'
     }
-    parameters{
-        string(name: 'verson', defaultValue: '')
-        choice(name: 'version', choice['1.0','1.2','1.3'])
-        
+    parameters {
+        string(name: 'version', defaultValue: '')
+        choice(name: 'versionChoice', choices: ['1.0', '1.2', '1.3'])
     }
     environment {
         SERVER_CREDENTIALS = credentials('slhfs')
     }
     stages {
         stage('build') {
-            when{
+            when {
                 expression {
-                    params.version == '1.0'
-                    }
+                    params.versionChoice == '1.0'
                 }
             }
             steps {
                 script {
-                    echo "${params.versions} the application..."
+                    echo "${params.versionChoice} the application..."
                 }
             }
         }
@@ -36,14 +32,13 @@ pipeline {
         }
         stage('deploy') {
             steps {
+                script {
                     echo "Deploying the application..."
-                    withCredentials([usernamePassword(credentialsId: 'slhfs', usernameVariable: 'USER', passwordVariable: 'PWD' )]) 
-                    {
-                      echo "some scipt ${USER} ${PWD}"
+                    withCredentials([usernamePassword(credentialsId: 'slhfs', usernameVariable: 'USER', passwordVariable: 'PWD')]) {
+                        echo "some script ${USER} ${PWD}"
                     }
                 }
-
             }
         }
     }
-
+}
