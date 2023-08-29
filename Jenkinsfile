@@ -21,8 +21,15 @@ pipeline {
             }
         }
         stage('build') {
+           
+            when {
+            expression {
+                params.versionChoice == '1.0'
+            }
+        }
             steps {
                 script {
+                    
                     gv.buildApp()
                 }
             }

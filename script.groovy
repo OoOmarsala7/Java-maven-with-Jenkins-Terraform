@@ -1,18 +1,7 @@
 def buildApp() {
     echo 'building the application'
 
-    stage('build') {
-        when {
-            expression {
-                params.versionChoice == '1.0'
-            }
-        }
-        steps {
-            script {
-                echo "${params.versionChoice} the application..."
-            }
-        }
-    }
+    
 }
 
 def testingApp() {
