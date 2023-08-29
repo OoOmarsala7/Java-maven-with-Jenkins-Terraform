@@ -23,7 +23,7 @@ pipeline {
         stage('deploy') {
             steps {
                     echo "Deploying the application..."
-                    withCredentials([usernamePassword(credentials: 'slhfs', usernameVariable: USER, passwordVariable: PWD )]) 
+                    withCredentials([usernamePassword(credentials: 'slhfs', usernameVariable: 'USER', passwordVariable: 'PWD' )]) 
                     {
                       sh "some scipt ${USER} ${PWD}"
                     }
