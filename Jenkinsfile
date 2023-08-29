@@ -1,60 +1,43 @@
-def gv
 
-pipeline {
+pipeline{
     agent any
-    tools {
+    tools{
         maven 'maven'
     }
-    parameters {
-        string(name: 'version', defaultValue: '')
-        choice(name: 'versionChoice', choices: ['1.0', '1.2', '1.3'])
+    environment{
+        DOCKER_CREDENTIAL= credenttials([usernamePassword(credentialsId: 'docker',  usernameVariable: 'USER', passwordVariable: 'PWD')])
     }
-    environment {
-        SERVER_CREDENTIALS = credentials('slhfs')
+    parameters{
+        choice(name: 'EVN', choices:['dev', 'test'])
     }
-    stages {
-        stage('init') {
-            steps {
-                script {
-                    gv = load 'script.groovy'
+    stages{
+        stage ('build') {
+            when{
+                expression {
+                    params.ENV == 'dev'
                 }
-            }
-        }
-        stage('build') {
-           
-            when {
-            expression {
-                params.versionChoice == '1.0'
-            }
-        }
-            steps {
-                script {
-                    
-                    gv.buildApp()
                 }
+            script{
+                echo "building the application"
+                sh 'mvn package' 
             }
+                         
+                 
+
         }
-        stage('test') {
-            steps {
-                script {
-                    gv.testingApp()
-                }
+        stage('docker') {
+            script{
+                echo "building docker image"
+                sh ' docker build omarsala78/my-rep:myjvp1.0 .'
+                
             }
         }
         stage('deploy') {
-            input{
-                message "enter the enviroment to deploy to"
-                ok "done"
-                parameters{
-                     choice(name: 'ENV', choices: ['dev', 'test'])
-                }
-            }
-            steps {
-                script {
-                    echo "deploying to ${ENV}"
-                    gv.deployApp()
-                }
-            }
+            script{
+                echo "logging into docker hub"
+                sh "echo ${env.PWD} | docker login -u ${env.USER} --password-stdin"
+                sh "docker push omarsala78/my-rep:myjvp1.0"
+            } }
         }
+
     }
-}
