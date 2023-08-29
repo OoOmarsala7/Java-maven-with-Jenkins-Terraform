@@ -2,7 +2,7 @@
 
 pipeline {
     agent any
-    enviroment {
+    environment {
         SERVER_CREDENTIALS = credentials('slhfs')
     }
     stages {
