@@ -30,7 +30,6 @@ pipeline {
             }
         }
         stage('deploy') {
-
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')])
                     script {
