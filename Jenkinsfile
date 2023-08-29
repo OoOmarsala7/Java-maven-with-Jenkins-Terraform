@@ -25,7 +25,7 @@ pipeline {
                     echo "Deploying the application..."
                     withCredentials([usernamePassword(credentials: 'slhfs', usernameVariable: 'USER', passwordVariable: 'PWD' )]) 
                     {
-                      sh "some scipt ${USER} ${PWD}"
+                      echo "some scipt ${USER} ${PWD}"
                     }
                 }
 
