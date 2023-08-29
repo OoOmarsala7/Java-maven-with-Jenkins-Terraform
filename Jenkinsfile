@@ -1,4 +1,5 @@
 def gv
+
 pipeline {
     agent any
     tools {
@@ -14,37 +15,31 @@ pipeline {
     stages {
         stage('init') {
             steps {
-                script{
-                    gv = load script.groovy
-
-            }               
-
+                script {
+                    gv = load 'script.groovy'
+                }
             }
-
-
-        stage('build') {
-            steps{
-                script{
-                    gv.buildApp()
-            }
-            }
-            
         }
+        stage('build') {
+            steps {
+                script {
+                    gv.buildApp()
+                }
+            }
         }
         stage('test') {
             steps {
                 script {
-                    gv.testingApp
+                    gv.testingApp()
                 }
             }
         }
         stage('deploy') {
             steps {
                 script {
-                    gv.deployApp
-                    }
+                    gv.deployApp()
                 }
             }
         }
     }
-
+}
