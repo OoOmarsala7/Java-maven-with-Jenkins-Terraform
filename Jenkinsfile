@@ -17,27 +17,32 @@ pipeline{
                     params.ENV == 'dev'
                 }
                 }
-            script{
-                echo "building the application"
-                sh 'mvn package' 
+                steps{
+                     script{
+                         echo "building the application"
+                          sh 'mvn package' 
             }
-                         
-                 
-
+                }
+                                                       
         }
         stage('docker') {
-            script{
+            steps{
+                script{
                 echo "building docker image"
-                sh ' docker build omarsala78/my-rep:myjvp1.0 .'
-                
-            }
+                sh 'docker build omarsala78/my-rep:myjvp1.0 .'
+            }  
+            }  
         }
         stage('deploy') {
-            script{
+            steps{
+                script{
                 echo "logging into docker hub"
                 sh "echo ${env.PWD} | docker login -u ${env.USER} --password-stdin"
                 sh "docker push omarsala78/my-rep:myjvp1.0"
-            } }
+            } 
+            }   
+            }
+            
         }
 
     }
