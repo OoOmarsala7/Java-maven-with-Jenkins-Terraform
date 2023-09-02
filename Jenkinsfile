@@ -1,3 +1,8 @@
+#!/usr/bin/env groovy
+
+@library('Jenkins-shared-library')
+dev gv
+
 pipeline {
     agent any
     tools {
@@ -8,7 +13,7 @@ pipeline {
         choice(name: 'ENV', choices: ['dev', 'test'])
     }
     stages {
-        stage('build') {
+        stage('buildjar') {
             when {
                 expression {
                     params.ENV == 'dev'
@@ -16,30 +21,25 @@ pipeline {
             }
             steps {
                 script {
-                    echo "Building the application"
-                    sh 'mvn package'
+                    buildJar()
                 }
             }
         }
         stage('docker') {
             steps {
                 script {
-                    echo "Building docker image"
-                    sh 'docker build -t omarsala78/my-rep:myjvp1.0 .'
+                    builddocker()
                 }
             }
         }
         stage('deploy') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')]) {
-                        echo "Logging into docker hub"
-                        sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
-                        sh "docker push omarsala78/my-rep:myjvp1.0"
+                    dockerpush()
                     }
                 }
     }
 }
 
     }
-}
+
