@@ -31,8 +31,8 @@ pipeline {
         }
         stage('deploy') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')])
                     script {
+                        withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USER', passwordVariable: 'PWD')])
                         echo "Logging into docker hub"
                         sh "echo ${PWD} | docker login -u ${USER} --password-stdin"
                         sh "docker push omarsala7/my-rep:myjvp1.0"
