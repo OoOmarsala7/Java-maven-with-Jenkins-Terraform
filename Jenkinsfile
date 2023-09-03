@@ -2,18 +2,17 @@
 
 @Library('Jenkins-shared-library')_
 
-parameters{
-    string(name: 'Image Name', defaultValue:'')
-}
+
 
 pipeline {
     agent any
     tools {
         maven 'maven'
     }
-    
+s    
     parameters {
         choice(name: 'ENV', choices: ['dev', 'test'])
+        string(name: 'Image Name', defaultValue:'')
     }
     stages {
         stage('buildjar') {
