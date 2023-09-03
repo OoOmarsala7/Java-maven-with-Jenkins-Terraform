@@ -2,6 +2,10 @@
 
 @Library('Jenkins-shared-library')_
 
+parameters{
+    string(name: 'Image Name', defaultValue:'')
+}
+
 pipeline {
     agent any
     tools {
