@@ -9,7 +9,7 @@ pipeline {
     tools {
         maven 'maven'
     }
-s    
+  
     parameters {
         choice(name: 'ENV', choices: ['dev', 'test'])
         string(name: 'Image Name', defaultValue:'')
